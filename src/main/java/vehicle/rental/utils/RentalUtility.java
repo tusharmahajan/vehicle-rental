@@ -1,9 +1,9 @@
 package vehicle.rental.utils;
 
-public class RentalUltility {
+public class RentalUtility {
 
     public static boolean enableLogs = false;
-    private RentalUltility(){}
+    private RentalUtility(){}
 
     public static void printLog(String logs){
         if(enableLogs) System.out.println(logs);

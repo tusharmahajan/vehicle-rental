@@ -4,7 +4,7 @@ import vehicle.rental.daos.BookingsDao;
 import vehicle.rental.models.VehicleBookingDetails;
 import vehicle.rental.models.VehicleChoiceStrategy;
 import vehicle.rental.models.VehicleDetails;
-import vehicle.rental.utils.RentalUltility;
+import vehicle.rental.utils.RentalUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class BookingService {
         List<VehicleDetails> availableVehiclesForBooking = this.populateAvailableVehicleList(vehicleDetails, startTime, endTime);
 
         if(availableVehiclesForBooking.isEmpty()){
-            RentalUltility.printLog("Cannot book vehicle.");
+            RentalUtility.printLog("Cannot book vehicle.");
             return null;
         }
         strategy.applyVehicleChoiceStrategy(availableVehiclesForBooking);

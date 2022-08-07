@@ -4,9 +4,8 @@ import vehicle.rental.models.VehicleChoiceStrategy;
 import vehicle.rental.models.VehicleDetails;
 import vehicle.rental.services.BookingService;
 import vehicle.rental.services.BranchService;
-import vehicle.rental.services.IncreasingPriceOrder;
 import vehicle.rental.services.VehicleService;
-import vehicle.rental.utils.RentalUltility;
+import vehicle.rental.utils.RentalUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +27,12 @@ public class OperationManager {
 
     public boolean addBranch(String branchId, List<String> vehicleTypes){
         if(branchId == null || branchId.length() == 0){
-            RentalUltility.printLog("Invalid Branch Id!");
+            RentalUtility.printLog("Invalid Branch Id!");
             return false;
         }
 
         if(vehicleTypes == null || vehicleTypes.isEmpty()){
-            RentalUltility.printLog("No vehicles added to branch.");
+            RentalUtility.printLog("No vehicles added to branch.");
             return false;
         }
 
@@ -45,22 +44,22 @@ public class OperationManager {
 
     public boolean addVehicle(String branchId, String vehicleType, String vehicleId, Integer price){
         if(branchId == null || branchId.length() == 0 || this.branchService.getBranch(branchId) == null){
-            RentalUltility.printLog("Invalid Branch Id!");
+            RentalUtility.printLog("Invalid Branch Id!");
             return false;
         }
 
         if(vehicleType == null || vehicleType.length() == 0){
-            RentalUltility.printLog("Vehicle Type not specified.");
+            RentalUtility.printLog("Vehicle Type not specified.");
             return false;
         }
 
         if(vehicleId == null || vehicleId.length() == 0){
-            RentalUltility.printLog("Vehicle Id not specified.");
+            RentalUtility.printLog("Vehicle Id not specified.");
             return false;
         }
 
         if(price == null || price <= 0){
-            RentalUltility.printLog("Invalid price!");
+            RentalUtility.printLog("Invalid price!");
             return false;
         }
 
@@ -68,7 +67,7 @@ public class OperationManager {
         boolean isValidVehicle = branchService.validateVehicle(vehicleTypes, vehicleType);
 
         if(!isValidVehicle){
-            RentalUltility.printLog("Vehicle not supported for branch: " + branchId);
+            RentalUtility.printLog("Vehicle not supported for branch: " + branchId);
             return false;
         }
         this.vehicleService.addVehicle(branchId, vehicleType, vehicleId, price);
@@ -77,28 +76,28 @@ public class OperationManager {
 
     public Integer bookVehicle(String branchId, String vehicleType, Integer startTime, Integer endTime, VehicleChoiceStrategy strategy){
         if(branchId == null || branchId.length() == 0 || this.branchService.getBranch(branchId) == null){
-            RentalUltility.printLog("Invalid Branch Id!");
+            RentalUtility.printLog("Invalid Branch Id!");
             return -1;
         }
 
         if(vehicleType == null || vehicleType.length() == 0){
-            RentalUltility.printLog("Vehicle Type not specified.");
+            RentalUtility.printLog("Vehicle Type not specified.");
             return -1;
         }
 
         if(endTime <= startTime){
-            RentalUltility.printLog("Enter valid time range!");
+            RentalUtility.printLog("Enter valid time range!");
             return -1;
         }
 
         if(this.vehicleService.getVehiclesFromBranchId(branchId) == null){
-            RentalUltility.printLog("No Vehicle available.");
+            RentalUtility.printLog("No Vehicle available.");
             return -1;
         }
 
         Map<String, List<VehicleDetails>> vehicleDetailsMap = this.vehicleService.getVehiclesFromBranchId(branchId);
         if(!vehicleDetailsMap.containsKey(vehicleType) || vehicleDetailsMap.get(vehicleType).isEmpty()){
-            RentalUltility.printLog("Vehicle Type not available at branch");
+            RentalUtility.printLog("Vehicle Type not available at branch");
             return -1;
         }
 
@@ -108,7 +107,7 @@ public class OperationManager {
         VehicleDetails bookedVehicle = this.bookingService.bookVehicle(vehicleDetails, startTime, endTime, strategy);
 
         if(bookedVehicle == null) {
-            RentalUltility.printLog("Vehicle Type not available at branch.");
+            RentalUtility.printLog("Vehicle Type not available at branch.");
             return -1;
         }
         return bookedVehicle.getPrice()*(endTime-startTime);
@@ -117,17 +116,17 @@ public class OperationManager {
     public List<String> displayAvailableVehicles(String branchId, Integer startTime, Integer endTime){
 
         if(branchId == null || branchId.length() == 0 || this.branchService.getBranch(branchId) == null){
-            RentalUltility.printLog("Invalid Branch Id!");
+            RentalUtility.printLog("Invalid Branch Id!");
             return null;
         }
 
         if(endTime < startTime){
-            RentalUltility.printLog("Enter valid time range!");
+            RentalUtility.printLog("Enter valid time range!");
             return null;
         }
 
         if(this.vehicleService.getVehiclesFromBranchId(branchId) == null){
-            RentalUltility.printLog("No Vehicle available.");
+            RentalUtility.printLog("No Vehicle available.");
             return null;
         }
 
@@ -141,7 +140,7 @@ public class OperationManager {
     }
 
     public void enableLogs(){
-        RentalUltility.enableLogs = true;
-        RentalUltility.printLog("Logs enabled.");
+        RentalUtility.enableLogs = true;
+        RentalUtility.printLog("Logs enabled.");
     }
 }
