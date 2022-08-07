@@ -1,7 +1,7 @@
 package vehicle.rental.services;
 
 import vehicle.rental.daos.VehiclesDao;
-import vehicle.rental.models.VehicleDetails;
+import vehicle.rental.models.Vehicle;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class VehicleService {
         this.vehiclesDao.addVehicles(branchId, vehicleType, vehicleId, price);
     }
 
-    public Map<String, List<VehicleDetails>> getVehiclesFromBranchId(String branchId){
+    public Map<String, List<Vehicle>> getVehiclesFromBranchId(String branchId){
         return this.vehiclesDao.getVehiclesForBranchId(branchId);
     }
 }

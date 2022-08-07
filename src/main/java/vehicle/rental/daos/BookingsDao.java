@@ -1,7 +1,7 @@
 package vehicle.rental.daos;
 
 import vehicle.rental.models.VehicleBookingDetails;
-import vehicle.rental.models.VehicleDetails;
+import vehicle.rental.models.Vehicle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +17,11 @@ public class BookingsDao {
         this.bookedVehiclesDetails = new HashMap<>();
     }
 
-    public void addBookingsForVehicle(VehicleDetails vehicleDetails, Integer startTime, Integer endTime){
-        if(!this.bookedVehiclesDetails.containsKey(vehicleDetails.getId())){
-            this.bookedVehiclesDetails.put(vehicleDetails.getId(), new ArrayList<>());
+    public void addBookingsForVehicle(Vehicle vehicle, Integer startTime, Integer endTime){
+        if(!this.bookedVehiclesDetails.containsKey(vehicle.getId())){
+            this.bookedVehiclesDetails.put(vehicle.getId(), new ArrayList<>());
         }
-        this.bookedVehiclesDetails.get(vehicleDetails.getId()).add(new VehicleBookingDetails(vehicleDetails, startTime, endTime));
+        this.bookedVehiclesDetails.get(vehicle.getId()).add(new VehicleBookingDetails(vehicle, startTime, endTime));
     }
 
     public List<VehicleBookingDetails> getBookingDetailsForVehicleId(String vehicleId){

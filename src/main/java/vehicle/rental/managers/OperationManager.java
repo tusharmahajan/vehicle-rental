@@ -1,7 +1,7 @@
 package vehicle.rental.managers;
 
 import vehicle.rental.models.VehicleChoiceStrategy;
-import vehicle.rental.models.VehicleDetails;
+import vehicle.rental.models.Vehicle;
 import vehicle.rental.services.BookingService;
 import vehicle.rental.services.BranchService;
 import vehicle.rental.services.VehicleService;
@@ -95,16 +95,16 @@ public class OperationManager {
             return -1;
         }
 
-        Map<String, List<VehicleDetails>> vehicleDetailsMap = this.vehicleService.getVehiclesFromBranchId(branchId);
+        Map<String, List<Vehicle>> vehicleDetailsMap = this.vehicleService.getVehiclesFromBranchId(branchId);
         if(!vehicleDetailsMap.containsKey(vehicleType) || vehicleDetailsMap.get(vehicleType).isEmpty()){
             RentalUtility.printLog("Vehicle Type not available at branch");
             return -1;
         }
 
         // get specified vehicle type for mentioned branch
-        List<VehicleDetails> vehicleDetails = vehicleDetailsMap.get(vehicleType);
+        List<Vehicle> vehicleDetails = vehicleDetailsMap.get(vehicleType);
 
-        VehicleDetails bookedVehicle = this.bookingService.bookVehicle(vehicleDetails, startTime, endTime, strategy);
+        Vehicle bookedVehicle = this.bookingService.bookVehicle(vehicleDetails, startTime, endTime, strategy);
 
         if(bookedVehicle == null) {
             RentalUtility.printLog("Vehicle Type not available at branch.");
@@ -130,11 +130,11 @@ public class OperationManager {
             return null;
         }
 
-        Map<String, List<VehicleDetails>> vehicleDetailsMap = this.vehicleService.getVehiclesFromBranchId(branchId);
+        Map<String, List<Vehicle>> vehicleDetailsMap = this.vehicleService.getVehiclesFromBranchId(branchId);
 
         List<String> availableVehicleList = new ArrayList<>();
-        for(List<VehicleDetails> entry : vehicleDetailsMap.values()){
-            availableVehicleList.addAll(this.bookingService.populateAvailableVehicleList(entry, startTime, endTime).stream().map(VehicleDetails::getId).collect(Collectors.toList()));
+        for(List<Vehicle> entry : vehicleDetailsMap.values()){
+            availableVehicleList.addAll(this.bookingService.populateAvailableVehicleList(entry, startTime, endTime).stream().map(Vehicle::getId).collect(Collectors.toList()));
         }
         return availableVehicleList;
     }

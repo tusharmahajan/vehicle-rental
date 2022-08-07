@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface VehicleChoiceStrategy {
 
-    public void applyVehicleChoiceStrategy(List<VehicleDetails> vehicleDetails);
+    public void applyVehicleChoiceStrategy(List<Vehicle> vehicleDetails);
 }

@@ -3,7 +3,7 @@ package vehicle.rental.services;
 import vehicle.rental.daos.BookingsDao;
 import vehicle.rental.models.VehicleBookingDetails;
 import vehicle.rental.models.VehicleChoiceStrategy;
-import vehicle.rental.models.VehicleDetails;
+import vehicle.rental.models.Vehicle;
 import vehicle.rental.utils.RentalUtility;
 
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ public class BookingService {
         this.bookingsDao = new BookingsDao();
     }
 
-    public VehicleDetails bookVehicle(List<VehicleDetails> vehicleDetails, Integer startTime, Integer endTime, VehicleChoiceStrategy strategy) {
-        List<VehicleDetails> availableVehiclesForBooking = this.populateAvailableVehicleList(vehicleDetails, startTime, endTime);
+    public Vehicle bookVehicle(List<Vehicle> vehicleDetails, Integer startTime, Integer endTime, VehicleChoiceStrategy strategy) {
+        List<Vehicle> availableVehiclesForBooking = this.populateAvailableVehicleList(vehicleDetails, startTime, endTime);
 
         if(availableVehiclesForBooking.isEmpty()){
             RentalUtility.printLog("Cannot book vehicle.");
@@ -30,10 +30,10 @@ public class BookingService {
     }
 
 
-    public List<VehicleDetails> populateAvailableVehicleList(List<VehicleDetails> vehicleDetails,
-                                                    Integer startTime, Integer endTime) {
-        List<VehicleDetails> availableVehiclesForBooking = new ArrayList<>();
-        for(VehicleDetails vehicle : vehicleDetails){
+    public List<Vehicle> populateAvailableVehicleList(List<Vehicle> vehicleDetails,
+                                                      Integer startTime, Integer endTime) {
+        List<Vehicle> availableVehiclesForBooking = new ArrayList<>();
+        for(Vehicle vehicle : vehicleDetails){
             // check for non-overlapping intervals
             List<VehicleBookingDetails> vehicleBookingDetails = this.bookingsDao.getBookingDetailsForVehicleId(vehicle.getId());
             if(vehicleBookingDetails != null && !vehicleBookingDetails.isEmpty()){

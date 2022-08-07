@@ -5,12 +5,12 @@ import lombok.Getter;
 @Getter
 public class VehicleBookingDetails {
 
-    private final VehicleDetails vehicleDetails;
+    private final Vehicle vehicle;
     private final int startTime;
     private final int endTime;
 
-    public VehicleBookingDetails(VehicleDetails vehicleDetails, int startTime, int endTime) {
-        this.vehicleDetails = vehicleDetails;
+    public VehicleBookingDetails(Vehicle vehicle, int startTime, int endTime) {
+        this.vehicle = vehicle;
         this.startTime = startTime;
         this.endTime = endTime;
     }
