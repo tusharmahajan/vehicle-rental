@@ -24,7 +24,7 @@ public class VehiclesDao {
         }
         Map<String, List<VehicleDetails>> vehicleDetailsMap = vehiclesAtSpecificBranch.get(branchId);
 
-        if(!vehicleDetailsMap.containsKey(branchId)){
+        if(!vehicleDetailsMap.containsKey(vehicleType)){
             vehicleDetailsMap.put(vehicleType, new ArrayList<>());
         }
         vehicleDetailsMap.get(vehicleType).add(vehicleDetails);

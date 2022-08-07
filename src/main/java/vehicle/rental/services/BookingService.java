@@ -2,6 +2,7 @@ package vehicle.rental.services;
 
 import vehicle.rental.daos.BookingsDao;
 import vehicle.rental.models.VehicleBookingDetails;
+import vehicle.rental.models.VehicleChoiceStrategy;
 import vehicle.rental.models.VehicleDetails;
 import vehicle.rental.utils.RentalUltility;
 
@@ -16,15 +17,14 @@ public class BookingService {
         this.bookingsDao = new BookingsDao();
     }
 
-    public VehicleDetails bookVehicle(List<VehicleDetails> vehicleDetails, Integer startTime, Integer endTime) {
+    public VehicleDetails bookVehicle(List<VehicleDetails> vehicleDetails, Integer startTime, Integer endTime, VehicleChoiceStrategy strategy) {
         List<VehicleDetails> availableVehiclesForBooking = this.populateAvailableVehicleList(vehicleDetails, startTime, endTime);
 
         if(availableVehiclesForBooking.isEmpty()){
             RentalUltility.printLog("Cannot book vehicle.");
             return null;
         }
-
-        this.sortOnPrice(availableVehiclesForBooking);
+        strategy.applyVehicleChoiceStrategy(availableVehiclesForBooking);
         this.bookingsDao.addBookingsForVehicle(availableVehiclesForBooking.get(0), startTime, endTime);
         return availableVehiclesForBooking.get(0);
     }
@@ -36,7 +36,7 @@ public class BookingService {
         for(VehicleDetails vehicle : vehicleDetails){
             // check for non-overlapping intervals
             List<VehicleBookingDetails> vehicleBookingDetails = this.bookingsDao.getBookingDetailsForVehicleId(vehicle.getId());
-            if(!vehicleBookingDetails.isEmpty()){
+            if(vehicleBookingDetails != null && !vehicleBookingDetails.isEmpty()){
                 for(VehicleBookingDetails slot : vehicleBookingDetails){
                     if(Math.max(slot.getStartTime(), startTime) < Math.min(slot.getEndTime(), endTime)){
                         continue;
@@ -49,11 +49,5 @@ public class BookingService {
             }
         }
         return availableVehiclesForBooking;
-    }
-
-
-    private void sortOnPrice(List<VehicleDetails> vehicleDetails){
-        IncreasingPriceOrder priceOrderComparator = new IncreasingPriceOrder();
-        vehicleDetails.sort(priceOrderComparator);
     }
 }

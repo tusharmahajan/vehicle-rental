@@ -1,14 +1,15 @@
 package vehicle.rental.services;
 
+import vehicle.rental.models.VehicleChoiceStrategy;
 import vehicle.rental.models.VehicleDetails;
 
 import java.util.Comparator;
+import java.util.List;
 
-public class IncreasingPriceOrder implements Comparator<VehicleDetails> {
+public class IncreasingPriceOrder implements VehicleChoiceStrategy {
 
     @Override
-    public int compare(VehicleDetails o1, VehicleDetails o2) {
-        return o1.getPrice().compareTo(o2.getPrice());
+    public void applyVehicleChoiceStrategy(List<VehicleDetails> vehicleDetails) {
+        vehicleDetails.sort(Comparator.comparing(VehicleDetails::getPrice));
     }
-
 }

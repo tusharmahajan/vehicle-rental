@@ -1,8 +1,10 @@
 package vehicle.rental.managers;
 
+import vehicle.rental.models.VehicleChoiceStrategy;
 import vehicle.rental.models.VehicleDetails;
 import vehicle.rental.services.BookingService;
 import vehicle.rental.services.BranchService;
+import vehicle.rental.services.IncreasingPriceOrder;
 import vehicle.rental.services.VehicleService;
 import vehicle.rental.utils.RentalUltility;
 
@@ -73,7 +75,7 @@ public class OperationManager {
         return true;
     }
 
-    public Integer bookVehicle(String branchId, String vehicleType, Integer startTime, Integer endTime){
+    public Integer bookVehicle(String branchId, String vehicleType, Integer startTime, Integer endTime, VehicleChoiceStrategy strategy){
         if(branchId == null || branchId.length() == 0 || this.branchService.getBranch(branchId) == null){
             RentalUltility.printLog("Invalid Branch Id!");
             return -1;
@@ -84,7 +86,7 @@ public class OperationManager {
             return -1;
         }
 
-        if(endTime < startTime){
+        if(endTime <= startTime){
             RentalUltility.printLog("Enter valid time range!");
             return -1;
         }
@@ -103,14 +105,13 @@ public class OperationManager {
         // get specified vehicle type for mentioned branch
         List<VehicleDetails> vehicleDetails = vehicleDetailsMap.get(vehicleType);
 
-        VehicleDetails bookedVehicle = this.bookingService.bookVehicle(vehicleDetails, startTime, endTime);
+        VehicleDetails bookedVehicle = this.bookingService.bookVehicle(vehicleDetails, startTime, endTime, strategy);
 
         if(bookedVehicle == null) {
             RentalUltility.printLog("Vehicle Type not available at branch.");
             return -1;
         }
-
-        return bookedVehicle.getPrice();
+        return bookedVehicle.getPrice()*(endTime-startTime);
     }
 
     public List<String> displayAvailableVehicles(String branchId, Integer startTime, Integer endTime){
